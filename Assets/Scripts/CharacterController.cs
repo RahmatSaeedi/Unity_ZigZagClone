@@ -32,7 +32,7 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && gameManager.gameStarted)
         {
             SwitcWalkinghDirection();
         }
@@ -55,5 +55,13 @@ public class CharacterController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 45, 0);
         else
             transform.rotation = Quaternion.Euler(0, -45, 0);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Star")
+        {
+            Destroy(other.gameObject);
+            gameManager.IncreaseScore();
+        }
     }
 }
