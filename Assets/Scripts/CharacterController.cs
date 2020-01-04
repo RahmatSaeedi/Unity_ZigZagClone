@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     public Transform rayStart;
+    public GameObject starParticleEffect;
     private Rigidbody rb;
     private bool walkingRight = true;
     private Animator anime;
@@ -45,7 +46,10 @@ public class CharacterController : MonoBehaviour
         if (!Physics.Raycast(rayStart.position, -transform.up, out hit, Mathf.Infinity))
         {
             anime.SetTrigger("isFalling");
-        };
+        } else
+        {
+            anime.SetTrigger("notFalling");
+        }
     }
 
     private void SwitcWalkinghDirection()
@@ -60,8 +64,10 @@ public class CharacterController : MonoBehaviour
     {
         if(other.tag == "Star")
         {
-            Destroy(other.gameObject);
             gameManager.IncreaseScore();
+            GameObject g = Instantiate(starParticleEffect, rayStart.transform.position, Quaternion.identity);
+            Destroy(g, 2);
+            Destroy(other.gameObject);
         }
     }
 }

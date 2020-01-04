@@ -9,9 +9,17 @@ public class GameManager : MonoBehaviour
     public bool gameStarted;
     public int score = 0;
     public Text scoreText;
+    public Text highScoreText;
+
+    private void Awake()
+    {
+        highScoreText.text = GetHighScore().ToString();
+        
+    }
     public void StartGame()
     {
         gameStarted = true;
+        FindObjectOfType<RoadGenerator>().StartBuilding();
     }
     public void EndGame()
     {
@@ -21,7 +29,11 @@ public class GameManager : MonoBehaviour
     {
         score++;
         scoreText.text = score.ToString();
-
+        if (score > PlayerPrefs.GetInt("Highscore"))
+        {
+            PlayerPrefs.SetInt("Highscore", score);
+            highScoreText.text = score.ToString();
+        }
     }
     private void Update()
     {
@@ -31,5 +43,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public int GetHighScore()
+    {
+        return PlayerPrefs.GetInt("Highscore");
+    }
 
 }
